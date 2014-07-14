@@ -95,6 +95,11 @@ func ReloadLangs(langs ...string) error {
 	return locales.Reload(langs...)
 }
 
+// Count returns number of languages that are registered.
+func Count() int {
+	return len(locales.langs)
+}
+
 // List all locale languages
 func ListLangs() []string {
 	langs := make([]string, len(locales.langs))
