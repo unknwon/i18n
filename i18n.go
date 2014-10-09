@@ -168,7 +168,7 @@ func SetMessage(lang, filePath string, appendFiles ...string) error {
 	return SetMessageWithDesc(lang, lang, filePath, appendFiles...)
 }
 
-// A Locale describles the information of localization.
+// Locale represents the information of localization.
 type Locale struct {
 	Lang string
 }
