@@ -16,6 +16,7 @@
 package i18n
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -24,6 +25,8 @@ import (
 )
 
 var (
+	ErrLangAlreadyExist = errors.New("Lang already exists")
+
 	locales = &localeStore{store: make(map[string]*locale)}
 )
 
@@ -157,7 +160,7 @@ func SetMessageWithDesc(lang, langDesc, filePath string, appendFiles ...string) 
 		lc.message = message
 
 		if locales.Add(lc) == false {
-			return fmt.Errorf("Lang %s alread exist", lang)
+			return ErrLangAlreadyExist
 		}
 	}
 	return err
