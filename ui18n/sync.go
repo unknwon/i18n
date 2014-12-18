@@ -1,4 +1,4 @@
-// Copyright 2013 Unknown
+// Copyright 2013 Unknwon
 //
 // Licensed under the Apache License, Version 2.0 (the "License"): you may
 // not use this file except in compliance with the License. You may obtain
@@ -19,7 +19,7 @@ import (
 	"os"
 
 	"github.com/Unknwon/com"
-	"github.com/Unknwon/goconfig"
+	"gopkg.in/ini.v0"
 )
 
 var cmdSync = &Command{
@@ -42,39 +42,44 @@ func syncLocales(cmd *Command, args []string) {
 		log.Fatalln("No target locale file is specified")
 	}
 
-	srcLocale, err := goconfig.LoadConfigFile(args[0])
+	srcLocale, err := ini.Load(args[0])
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	// Load or create target locales.
 	targets := args[1:]
-	targetLocales := make([]*goconfig.ConfigFile, len(targets))
+	targetLocales := make([]*ini.File, len(targets))
 	for i, target := range targets {
 		if !com.IsExist(target) {
 			os.Create(target)
 		}
 
-		targetLocales[i], err = goconfig.LoadConfigFile(target)
+		targetLocales[i], err = ini.Load(target)
 		if err != nil {
 			log.Fatalln(err)
 		}
 	}
 
-	for _, secName := range srcLocale.GetSectionList() {
-		keyList := srcLocale.GetKeyList(secName)
+	for _, secName := range srcLocale.SectionStrings() {
+		keyList := srcLocale.Section(secName).KeyStrings()
 		for _, target := range targetLocales {
+			sec, err := target.GetSection(secName)
+			if err != nil {
+				if sec, err = target.NewSection(secName); err != nil {
+					log.Fatalln(err)
+				}
+			}
 			for _, k := range keyList {
-				if _, err = target.GetValue(secName, k); err != nil {
-					target.SetValue(secName, k, "")
+				if _, err = sec.GetKey(k); err != nil {
+					sec.NewKey(k, "")
 				}
 			}
 		}
 	}
 
 	for i, target := range targetLocales {
-		err = goconfig.SaveConfigFile(target, targets[i])
-		if err != nil {
+		if err = target.SaveTo(targets[i]); err != nil {
 			log.Fatalln(err)
 		}
 	}

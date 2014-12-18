@@ -1,4 +1,4 @@
-// Copyright 2013 Unknown
+// Copyright 2013 Unknwon
 //
 // Licensed under the Apache License, Version 2.0 (the "License"): you may
 // not use this file except in compliance with the License. You may obtain
@@ -21,7 +21,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Unknwon/goconfig"
+	"gopkg.in/ini.v0"
 )
 
 var (
@@ -34,7 +34,7 @@ type locale struct {
 	id       int
 	lang     string
 	langDesc string
-	message  *goconfig.ConfigFile
+	message  *ini.File
 }
 
 type localeStore struct {
@@ -46,12 +46,8 @@ type localeStore struct {
 // Get target language string
 func (d *localeStore) Get(lang, section, format string) (string, bool) {
 	if locale, ok := d.store[lang]; ok {
-		if section == "" {
-			section = goconfig.DEFAULT_SECTION
-		}
-
-		if value, err := locale.message.GetValue(section, format); err == nil {
-			return value, true
+		if key, err := locale.message.Section(section).GetKey(format); err == nil {
+			return key.Value(), true
 		}
 	}
 
@@ -71,29 +67,26 @@ func (d *localeStore) Add(lc *locale) bool {
 	return true
 }
 
-func (d *localeStore) Reload(langs ...string) error {
+func (d *localeStore) Reload(langs ...string) (err error) {
 	if len(langs) == 0 {
 		for _, lc := range d.store {
-			err := lc.message.Reload()
-			if err != nil {
+			if err = lc.message.Reload(); err != nil {
 				return err
 			}
 		}
 	} else {
 		for _, lang := range langs {
 			if lc, ok := d.store[lang]; ok {
-				err := lc.message.Reload()
-				if err != nil {
+				if err = lc.message.Reload(); err != nil {
 					return err
 				}
 			}
 		}
 	}
-
 	return nil
 }
 
-// Reload locales
+// ReloadLangs reloads locale files.
 func ReloadLangs(langs ...string) error {
 	return locales.Reload(langs...)
 }
@@ -103,7 +96,7 @@ func Count() int {
 	return len(locales.langs)
 }
 
-// List all locale languages
+// ListLangs returns list of all locale languages.
 func ListLangs() []string {
 	langs := make([]string, len(locales.langs))
 	copy(langs, locales.langs)
@@ -116,13 +109,14 @@ func ListLangDescs() []string {
 	return langDescs
 }
 
-// Check language name if exist
+// IsExist returns true if given language locale exists.
 func IsExist(lang string) bool {
 	_, ok := locales.store[lang]
 	return ok
 }
 
-// Check language name if exist
+// IndexLang returns index of language locale,
+// it returns -1 if locale not exists.
 func IndexLang(lang string) int {
 	if lc, ok := locales.store[lang]; ok {
 		return lc.id
@@ -130,7 +124,7 @@ func IndexLang(lang string) int {
 	return -1
 }
 
-// Get language by index id
+// GetLangByIndex return language by given index.
 func GetLangByIndex(index int) string {
 	if index < 0 || index >= len(locales.langs) {
 		return ""
@@ -150,8 +144,8 @@ func GetDescriptionByLang(lang string) string {
 	return GetDescriptionByIndex(IndexLang(lang))
 }
 
-func SetMessageWithDesc(lang, langDesc, filePath string, appendFiles ...string) error {
-	message, err := goconfig.LoadConfigFile(filePath, appendFiles...)
+func SetMessageWithDesc(lang, langDesc, filePath string, appendFiles ...interface{}) error {
+	message, err := ini.Load(filePath, appendFiles...)
 	if err == nil {
 		message.BlockMode = false
 		lc := new(locale)
@@ -167,7 +161,7 @@ func SetMessageWithDesc(lang, langDesc, filePath string, appendFiles ...string) 
 }
 
 // SetMessage sets the message file for localization.
-func SetMessage(lang, filePath string, appendFiles ...string) error {
+func SetMessage(lang, filePath string, appendFiles ...interface{}) error {
 	return SetMessageWithDesc(lang, lang, filePath, appendFiles...)
 }
 
@@ -176,17 +170,17 @@ type Locale struct {
 	Lang string
 }
 
-// Tr translate content to target language.
+// Tr translates content to target language.
 func (l Locale) Tr(format string, args ...interface{}) string {
 	return Tr(l.Lang, format, args...)
 }
 
-// Index get lang index of LangStore
+// Index returns lang index of LangStore.
 func (l Locale) Index() int {
 	return IndexLang(l.Lang)
 }
 
-// Tr translate content to target language.
+// Tr translates content to target language.
 func Tr(lang, format string, args ...interface{}) string {
 	var section string
 	parts := strings.SplitN(format, ".", 2)
@@ -216,5 +210,5 @@ func Tr(lang, format string, args ...interface{}) string {
 		}
 		return fmt.Sprintf(format, params...)
 	}
-	return fmt.Sprintf(format)
+	return format
 }
