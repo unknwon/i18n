@@ -9,7 +9,7 @@ This package provides multiple-language options to users, improve user experienc
 
 You can use following command to install this module:
 
-    go get github.com/beego/i18n
+    go get github.com/Unknwon/i18n
 
 ## Usage
 
