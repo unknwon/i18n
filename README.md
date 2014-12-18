@@ -29,14 +29,14 @@ Here are two simplest locale file examples:
 
 File `locale_en-US.ini`:
 
-```
+```ini
 hi = hello, %s
 bye = goodbye
 ```
 
 File `locale_zh-CN.ini`:
 
-```
+```ini
 hi = 您好，%s
 bye = 再见
 ```
