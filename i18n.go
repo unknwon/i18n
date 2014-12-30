@@ -21,7 +21,7 @@ import (
 	"reflect"
 	"strings"
 
-	"gopkg.in/ini.v0"
+	"gopkg.in/ini.v1"
 )
 
 var (
