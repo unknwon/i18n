@@ -144,8 +144,8 @@ func GetDescriptionByLang(lang string) string {
 	return GetDescriptionByIndex(IndexLang(lang))
 }
 
-func SetMessageWithDesc(lang, langDesc, filePath string, appendFiles ...interface{}) error {
-	message, err := ini.Load(filePath, appendFiles...)
+func SetMessageWithDesc(lang, langDesc string, localeFile interface{}, otherLocaleFiles ...interface{}) error {
+	message, err := ini.Load(localeFile, otherLocaleFiles...)
 	if err == nil {
 		message.BlockMode = false
 		lc := new(locale)
@@ -161,8 +161,8 @@ func SetMessageWithDesc(lang, langDesc, filePath string, appendFiles ...interfac
 }
 
 // SetMessage sets the message file for localization.
-func SetMessage(lang, filePath string, appendFiles ...interface{}) error {
-	return SetMessageWithDesc(lang, lang, filePath, appendFiles...)
+func SetMessage(lang string, localeFile interface{}, otherLocaleFiles ...interface{}) error {
+	return SetMessageWithDesc(lang, lang, localeFile, otherLocaleFiles...)
 }
 
 // Locale represents the information of localization.
