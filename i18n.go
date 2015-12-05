@@ -38,9 +38,10 @@ type locale struct {
 }
 
 type localeStore struct {
-	langs     []string
-	langDescs []string
-	store     map[string]*locale
+	langs       []string
+	langDescs   []string
+	store       map[string]*locale
+	defaultLang string
 }
 
 // Get target language string
@@ -49,6 +50,10 @@ func (d *localeStore) Get(lang, section, format string) (string, bool) {
 		if key, err := locale.message.Section(section).GetKey(format); err == nil {
 			return key.Value(), true
 		}
+	}
+
+	if len(d.defaultLang) > 0 && lang != d.defaultLang {
+		return d.Get(d.defaultLang, section, format)
 	}
 
 	return "", false
@@ -84,6 +89,12 @@ func (d *localeStore) Reload(langs ...string) (err error) {
 		}
 	}
 	return nil
+}
+
+// SetDefaultLang sets default language which is a indicator that
+// when target language is not found, try find in default language again.
+func SetDefaultLang(lang string) {
+	locales.defaultLang = lang
 }
 
 // ReloadLangs reloads locale files.
