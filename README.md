@@ -64,7 +64,7 @@ type MyController struct{
 
 func ... {
     c := &MyController{
-        Locale: &Locale{"en-US"},
+        Locale: i18n.Locale{"en-US"},
     }
     _ = c.Tr("hi", "Unknwon")
     _ = c.Tr("bye")
