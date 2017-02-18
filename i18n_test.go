@@ -18,10 +18,35 @@ import (
 	"testing"
 )
 
+func Test_Tr(t *testing.T) {
+	SetMessage("en-US", "testdata/locale_en-US.ini")
+	result := Tr("en-US", "NAME")
+	if result != "English" {
+		t.Errorf("expect 'English', got '%s'", result)
+	}
+
+	result = Tr("en-US", "section.NAME")
+	if result != "Chinese" {
+		t.Errorf("expect 'Chinese', got '%s'", result)
+	}
+
+	result = Tr("en-US", "SECONDS", 10)
+	if result != "10 seconds" {
+		t.Errorf("expect '10 seconds', got '%s'", result)
+	}
+}
+
 func Benchmark_Tr(b *testing.B) {
 	SetMessage("en-US", "testdata/locale_en-US.ini")
 	for i := 0; i < b.N; i++ {
 		Tr("en-US", "NAME")
+	}
+}
+
+func Benchmark_TrWithSection(b *testing.B) {
+	SetMessage("en-US", "testdata/locale_en-US.ini")
+	for i := 0; i < b.N; i++ {
+		Tr("en-US", "section.NAME")
 	}
 }
 
