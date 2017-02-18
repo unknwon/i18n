@@ -34,6 +34,12 @@ func Test_Tr(t *testing.T) {
 	if result != "10 seconds" {
 		t.Errorf("expect '10 seconds', got '%s'", result)
 	}
+
+	result = Tr("en-US", ".BAD.NAME")
+	if result != "Bad Name" {
+		t.Errorf("expect 'Bad Name', got '%s'", result)
+	}
+
 }
 
 func Benchmark_Tr(b *testing.B) {
