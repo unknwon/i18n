@@ -18,7 +18,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 	"gopkg.in/ini.v1"
 )
 

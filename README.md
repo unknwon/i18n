@@ -1,5 +1,4 @@
-i18n [![GoDoc](https://godoc.org/github.com/Unknwon/i18n?status.svg)](https://godoc.org/github.com/Unknwon/i18n) [![Sourcegraph](https://sourcegraph.com/github.com/Unknwon/i18n/-/badge.svg)](https://sourcegraph.com/github.com/Unknwon/i18n?badge)
-====
+i18n [![GoDoc](https://godoc.org/github.com/unknwon/i18n?status.svg)](https://godoc.org/github.com/unknwon/i18n)
 
 Package i18n is for app Internationalization and Localization.
 
@@ -16,10 +15,10 @@ You can use following command to install this module:
 First of all, you have to import this package:
 
 ```go
-import "github.com/Unknwon/i18n"
+import "github.com/unknwon/i18n"
 ```
 
-The format of locale files is very like INI format configuration file, which is basically key-value pairs. But this module has some improvements. Every language corresponding to a locale file, for example, under `conf/locale` folder of [gogsweb](https://github.com/gogits/gogsweb/tree/master/conf/locale), there are two files called `locale_en-US.ini` and `locale_zh-CN.ini`.
+The format of locale files is very like INI format configuration file, which is basically key-value pairs. But this module has some improvements. Every language corresponding to a locale file, for example, suppose there are two files called `locale_en-US.ini` and `locale_zh-CN.ini`.
 
 The name and extensions of locale files can be anything, but we strongly recommend you to follow the style of gogsweb.
 
@@ -119,7 +118,7 @@ to get expect result.
 
 Module i18n provides a command line helper tool beei18n for simplify steps of your development. You can install it as follows:
 
-	go get github.com/Unknwon/i18n/ui18n
+	go get github.com/unknwon/i18n/ui18n
 
 ### Sync locale files
 
