@@ -1,4 +1,4 @@
-i18n [![GoDoc](https://godoc.org/github.com/unknwon/i18n?status.svg)](https://godoc.org/github.com/unknwon/i18n)
+# i18n [![GoDoc](https://godoc.org/github.com/unknwon/i18n?status.svg)](https://godoc.org/github.com/unknwon/i18n)
 
 Package i18n is for app Internationalization and Localization.
 
