@@ -52,7 +52,10 @@ func syncLocales(cmd *Command, args []string) {
 	targetLocales := make([]*ini.File, len(targets))
 	for i, target := range targets {
 		if !com.IsExist(target) {
-			os.Create(target)
+			_, err = os.Create(target)
+			if err != nil {
+				log.Fatalln(err)
+			}
 		}
 
 		targetLocales[i], err = ini.Load(target)
@@ -72,7 +75,10 @@ func syncLocales(cmd *Command, args []string) {
 			}
 			for _, k := range keyList {
 				if _, err = sec.GetKey(k); err != nil {
-					sec.NewKey(k, "")
+					_, err = sec.NewKey(k, "")
+					if err != nil {
+						log.Fatalln(err)
+					}
 				}
 			}
 		}
