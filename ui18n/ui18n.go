@@ -95,7 +95,7 @@ func main() {
 			if cmd.CustomFlags {
 				args = args[1:]
 			} else {
-				cmd.Flag.Parse(args[1:])
+				_ = cmd.Flag.Parse(args[1:])
 				args = cmd.Flag.Args()
 			}
 			cmd.Run(cmd, args)
