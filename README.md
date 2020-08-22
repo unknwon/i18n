@@ -129,7 +129,7 @@ Module i18n provides a command line helper tool beei18n for simplify steps of yo
 
 Command `sync` allows you use a exist local file as the template to create or sync other locale files:
 
-	ui18n sync srouce_file.ini other1.ini other2.ini
+	ui18n sync source_file.ini other1.ini other2.ini
 
 This command can operate 1 or more files in one command.
 
