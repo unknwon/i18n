@@ -44,6 +44,20 @@ func Test_Tr(t *testing.T) {
 	if result != `test value <span style="color: ; background: ">more text</span>` {
 		t.Errorf(`expect 'test value <span style="color: ; background: ">more text</span>', got '%s'`, result)
 	}
+
+	langs := ListLangs()
+	if len(langs) != 1 {
+		t.Errorf("expect '1', got '%d'", len(langs))
+	} else if langs[0] != "en-US" {
+		t.Errorf("expect 'en-US', got '%s'", langs[0])
+	}
+
+	Reset()
+
+	langs = ListLangs()
+	if len(langs) != 0 {
+		t.Errorf("expect '0', got '%d'", len(langs))
+	}
 }
 
 func Benchmark_Tr(b *testing.B) {
