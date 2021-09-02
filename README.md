@@ -13,7 +13,7 @@ This package provides multiple-language options to improve user experience. Site
 
 You can use following command to install this module:
 
-    go get github.com/Unknwon/i18n
+    go get github.com/unknwon/i18n
 
 ## Usage
 
